@@ -173,9 +173,29 @@
         </div>
       </div>
 
-      <a href="https://tu-web-de-pagos.com" class="boton-pago" target="_blank">
-        <button>Pagar ahora</button>
-      </a>
+    <button class="btn-parpadeante">Pendiente de pago</button>
+
+<style>
+  @keyframes parpadeo {
+    0%, 100% {
+      background-color: red;
+    }
+    50% {
+      background-color: transparent;
+    }
+  }
+
+  .btn-parpadeante {
+    padding: 10px 20px;
+    font-size: 16px;
+    color: white;
+    border: none;
+    cursor: pointer;
+    animation: parpadeo 1s infinite;
+    border-radius: 5px;
+  }
+</style>
+
 
       <div class="cerrar-sesion">
         <a href="index.html">Cerrar sesión</a>
