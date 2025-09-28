@@ -111,7 +111,7 @@
   <div class="login-container">
     <h2>Iniciar Sesión</h2>
 
-    <label for="username">Usuario</label>
+    <label for="username">Correo electronico</label>
     <input type="text" id="username" placeholder="Ingresa tu usuario" autocomplete="off" />
 
     <label for="password">Contraseña</label>
@@ -119,23 +119,28 @@
 
     <button onclick="login()">Entrar</button>
 
-    <P style="text-align: center;">SOLICITA A UN ASESOR TU USUARIO</P>
+    <p style="text-align: center;">SOLICITA A UN ASESOR TU USUARIO</p>
 
     <div class="error" id="error-msg"></div>
   </div>
 
   <script>
-    // ✅ Edita tu usuario y contraseña aquí
-    const USUARIO_CORRECTO = "admin";
-    const CONTRASENA_CORRECTA = "1234";
+    // 👥 Usuarios y contraseñas
+    const usuarios = {
+      "gerardomendez12t@gmail.com": "96124324",
+      "admin2": "5678",
+      "admin3": "abcd"
+      // Agrega más usuarios aquí
+    };
 
     function login() {
       const usuario = document.getElementById("username").value.trim();
       const clave = document.getElementById("password").value.trim();
       const errorMsg = document.getElementById("error-msg");
 
-      if (usuario === USUARIO_CORRECTO && clave === CONTRASENA_CORRECTA) {
-        window.location.href = "profile.html";
+      if (usuarios[usuario] && usuarios[usuario] === clave) {
+        // Redirige al archivo HTML con el mismo nombre que el usuario
+        window.location.href = `${usuario}.html`;
       } else {
         errorMsg.textContent = "Usuario o contraseña incorrectos.";
       }
