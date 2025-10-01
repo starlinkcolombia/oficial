@@ -81,7 +81,7 @@
       margin: 6px 0;
     }
 
-    button {
+    button, .btn-parpadeante {
       padding: 12px 20px;
       border-radius: 6px;
       border: none;
@@ -152,13 +152,18 @@
     }
 
     .btn-parpadeante {
-      padding: 10px 20px;
       font-size: 16px;
       color: white;
-      border: none;
       cursor: pointer;
       animation: parpadeo 1s infinite;
       border-radius: 5px;
+      display: block;
+      text-align: center;
+      text-decoration: none;
+      padding: 12px 20px;
+      margin-top: 20px;
+      width: 100%;         /* ajustado al ancho de la tarjeta */
+      box-sizing: border-box; /* evita desbordes */
     }
   </style>
 </head>
@@ -175,7 +180,6 @@
     <div class="card">
       <h2>Datos del Usuario</h2>
 
-      <!-- Edita estos datos manualmente desde el HTML -->
       <label>Nombres y Apellidos</label>
       <div class="readonly-box">pedro antonio roa</div>
 
@@ -205,10 +209,6 @@
           <p><strong>PLAN:  ̶$̶1̶5̶0̶.̶0̶0̶0̶  $89.000</strong></p> <br>
 
           <p style="font-size:large;"><strong>TOTOAL A PAGAR:   $489.000 COP </strong></p>
-          
-
-         
-
         </div>
       </div>
 
@@ -217,11 +217,12 @@
         <h3>Para terminar solo resta que pagues por transferencia desde la app nequi</h3>
         <p><strong>vas a envia y seleccionas enviar con llave:</strong> 3012109882</p>
         <p><strong>facturador: alvaro bernal</strong> </p>
-      
       </div>
 
-      <!-- Botón parpadeante -->
-      <button class="btn-parpadeante">Pago pendiente</button>
+      <!-- Botón parpadeante con link -->
+      <a href="https://mpago.li/2HFALAw" target="_blank" class="btn-parpadeante">
+        Pago pendiente
+      </a>
 
       <div class="cerrar-sesion">
         <a href="index.html">Cerrar sesión</a>
