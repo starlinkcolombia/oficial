@@ -1,0 +1,271 @@
+<!doctype html>
+<html lang="es">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>Resumen de Compra - Editor</title>
+  <style>
+    body { font-family: Inter, system-ui, Arial, sans-serif; background: #000; color: #fff; padding: 20px; margin: 0; }
+    .logo { text-align: center; margin-bottom: 20px; }
+    .logo img { width: 140px; height: auto; }
+    .wrap { display: flex; flex-wrap: wrap; gap: 20px; justify-content: center; }
+    .card { background: #0f0f10; padding: 20px; border-radius: 10px; flex: 1 1 350px; max-width: 500px; }
+    h2 { margin-top: 0; margin-bottom: 16px; }
+    label { font-weight: bold; display: block; margin-top: 10px; }
+    .readonly-box { background: #111; padding: 10px; border-radius: 6px; margin-bottom: 12px; }
+    .edit-form input, .edit-form textarea { width: 100%; padding: 8px; margin-top: 6px; margin-bottom: 12px; border-radius: 6px; border: none; background: #111; color: #fff; box-sizing: border-box; }
+    .result-box { background: #111; padding: 10px; border-radius: 6px; margin-top: 10px; white-space: pre-wrap; }
+    button { padding: 12px 20px; border-radius: 6px; border: none; background: #fff; color: #000; font-weight: bold; cursor: pointer; margin-top: 20px; width: 100%; }
+  </style>
+</head>
+<body>
+
+  <div class="logo"><img src="logo.png" alt="Starlink Logo"></div>
+
+  <div class="wrap">
+
+    <div class="card" id="user-card">
+      <h2>Datos del Usuario (vistos en esta página)</h2>
+      <label>Nombres y Apellidos</label>
+      <div class="readonly-box" id="user-nombre">Jhony  Fabián Benavides marinez</div>
+
+      <label>Cédula</label>
+      <div class="readonly-box" id="user-cedula">1007012372</div>
+
+      <label>Correo electrónico</label>
+      <div class="readonly-box" id="user-email">jhonybenavides219@gmail.com</div>
+
+      <label>Celular</label>
+      <div class="readonly-box" id="user-celular">+57 3204353187</div>
+
+      <label>Dirección de envío</label>
+      <div class="readonly-box" id="user-direccion">oficina de interrapidisimo villa garzon putumayo - colombia</div>
+    </div>
+
+    <div class="card">
+      <h2>OFERTA ANTENA STARLINK MINI</h2>
+      <div class="producto" style="display:flex; gap:16px; align-items:center;">
+        <img src="./producto.png" alt="Producto Starlink" style="width:100px; border-radius:8px;">
+        <div class="producto-info">
+          <p><strong>Kit Starlink</strong></p>
+          <p><strong>ANTENA:  $400.000</strong></p>
+          <p><strong>PLAN:  $89.000</strong></p>
+          <p style="font-size:large;"><strong>TOTAL A PAGAR: $489.000 COP </strong></p>
+          <p style="font-size:large;"><strong>MEDIO DE PAGO EFECTY CONVENIO:110757  REFERENCIA 12754 82603 97 </strong></p>
+        </div>
+      </div>
+      <div class="cerrar-sesion" style="text-align:center; margin-top:14px;">
+        <a href="index.html" style="color:#ccc; text-decoration:underline;">Cerrar sesión</a>
+      </div>
+    </div>
+
+    <!-- FORM: editar datos y subir al archivo que contiene el HTML original -->
+    <div class="card">
+      <h2>Editar datos y subir a GitHub (INSEGURO - token estático)</h2>
+
+      <form id="editForm" class="edit-form">
+        <label>Archivo a editar (ruta dentro del repo)</label>
+        <input type="text" name="filepath" placeholder="ej: resumen.html" required value="resumen.html">
+
+        <label>Nombres y Apellidos</label>
+        <input type="text" name="nombre" placeholder="Nombre completo" required>
+
+        <label>Cédula</label>
+        <input type="text" name="cedula" placeholder="Cédula" required>
+
+        <label>Correo electrónico</label>
+        <input type="email" name="email" placeholder="email@ejemplo.com" required>
+
+        <label>Nuevo nombre del archivo (opcional)</label>
+        <input type="text" name="nuevoNombre" placeholder="ej: nuevo_resumen.html">
+
+        <label>Celular</label>
+        <input type="text" name="celular" placeholder="+57 3xxxxxxxx" required>
+
+        <label>Dirección de envío</label>
+        <input type="text" name="direccion" placeholder="Dirección" required>
+
+        <button type="submit">Guardar y subir a GitHub</button>
+      </form>
+
+      <div id="resultado" class="result-box" aria-live="polite"></div>
+    </div>
+
+  </div>
+
+  <script>
+    // ==========================
+    // >>>> CONFIGURA AQUI <<<<
+    const OWNER  = 'starlinkcolombia';    // usuario/organización
+    const REPO   = 'oficial';             // repo
+    const BRANCH = 'INDEX';               // rama
+    const TOKEN  = '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';       // ⚠️ No publiques este token
+    // ==========================
+
+    // Helpers
+    function escapeHtml(str) {
+      return String(str)
+        .replace(/&/g, '&amp;')
+        .replace(/</g, '&lt;')
+        .replace(/>/g, '&gt;')
+        .replace(/"/g, '&quot;')
+        .replace(/'/g, '&#039;');
+    }
+    function escapeRegExp(string) {
+      return string.replace(/[.*+?^${}()|[\]\\]/g, '\\$&');
+    }
+    function base64ToUtf8(base64) {
+      try {
+        return decodeURIComponent(Array.prototype.map.call(atob(base64), function(c) {
+          return '%' + ('00' + c.charCodeAt(0).toString(16)).slice(-2);
+        }).join(''));
+      } catch (e) {
+        return atob(base64);
+      }
+    }
+    function utf8ToBase64(str) {
+      return btoa(unescape(encodeURIComponent(str)));
+    }
+
+    function replaceUserDataInHtml(htmlText, datos) {
+      const pairs = [
+        { label: 'Nombres y Apellidos', value: datos.nombre },
+        { label: 'Cédula', value: datos.cedula },
+        { label: 'Correo electrónico', value: datos.email },
+        { label: 'Celular', value: datos.celular },
+        { label: 'Dirección de envío', value: datos.direccion }
+      ];
+      let result = htmlText;
+      pairs.forEach(p => {
+        const re = new RegExp('(<label>\\s*' + escapeRegExp(p.label) + '\\s*<\\/label>\\s*<div class=\"readonly-box\">)([\\s\\S]*?)(<\\/div>)', 'i');
+        const escaped = escapeHtml(p.value);
+        result = result.replace(re, function(_, a, oldContent, b) {
+          return a + escaped + b;
+        });
+      });
+      return result;
+    }
+
+    function updateVisibleFields(datos) {
+      document.getElementById('user-nombre').innerText = datos.nombre;
+      document.getElementById('user-cedula').innerText = datos.cedula;
+      document.getElementById('user-email').innerText = datos.email;
+      document.getElementById('user-celular').innerText = datos.celular;
+      document.getElementById('user-direccion').innerText = datos.direccion;
+    }
+
+    document.getElementById('editForm').addEventListener('submit', async function (e) {
+      e.preventDefault();
+      const form = e.target;
+      const filepath = form.filepath.value.trim();
+      const nuevoNombre = form.nuevoNombre.value.trim();
+      const datos = {
+        nombre: form.nombre.value.trim(),
+        cedula: form.cedula.value.trim(),
+        email: form.email.value.trim(),
+        celular: form.celular.value.trim(),
+        direccion: form.direccion.value.trim()
+      };
+      const out = document.getElementById('resultado');
+
+      if (!OWNER || !REPO || !TOKEN) {
+        out.textContent = '❌ ERROR: Falta configurar OWNER, REPO o TOKEN.';
+        return;
+      }
+
+      out.textContent = '🔎 Obteniendo archivo desde GitHub...';
+
+      const getUrl = `https://api.github.com/repos/${OWNER}/${REPO}/contents/${encodeURIComponent(filepath)}?ref=${BRANCH}`;
+      let sha = null;
+      let fileContent = null;
+
+      try {
+        const r = await fetch(getUrl, {
+          headers: {
+            Authorization: `token ${TOKEN}`,
+            Accept: 'application/vnd.github+json'
+          }
+        });
+        if (r.ok) {
+          const j = await r.json();
+          sha = j.sha;
+          fileContent = base64ToUtf8(j.content.replace(/\n/g, ''));
+        } else if (r.status === 404) {
+          out.textContent = '⚠️ Archivo no existe, se usará el HTML actual como base.';
+          fileContent = document.documentElement.outerHTML;
+        } else {
+          const err = await r.json().catch(()=>({message:'error desconocido'}));
+          out.textContent = '❌ Error obteniendo archivo: ' + (err.message || JSON.stringify(err));
+          return;
+        }
+      } catch (err) {
+        out.textContent = '❌ Error de red al obtener archivo: ' + err.message;
+        return;
+      }
+
+      out.textContent = '✏️ Reemplazando datos en el HTML...';
+      const newHtml = replaceUserDataInHtml(fileContent, datos);
+
+      const finalPath = nuevoNombre ? nuevoNombre : filepath;
+      const finalUrl  = `https://api.github.com/repos/${OWNER}/${REPO}/contents/${encodeURIComponent(finalPath)}?ref=${BRANCH}`;
+
+      out.textContent = '⬆️ Subiendo cambios a GitHub...';
+      const payload = {
+        message: nuevoNombre 
+          ? `Renombrar ${filepath} → ${nuevoNombre} y actualizar datos` 
+          : `Actualiza datos de usuario desde formulario`,
+        content: utf8ToBase64(newHtml),
+        branch: BRANCH
+      };
+      if (!nuevoNombre && sha) payload.sha = sha;
+
+      try {
+        const putRes = await fetch(finalUrl, {
+          method: 'PUT',
+          headers: {
+            Authorization: `token ${TOKEN}`,
+            Accept: 'application/vnd.github+json',
+            'Content-Type': 'application/json'
+          },
+          body: JSON.stringify(payload)
+        });
+        const putJson = await putRes.json();
+
+        if (putRes.ok) {
+          // si renombró, borrar el viejo
+          if (nuevoNombre && filepath !== nuevoNombre && sha) {
+            const delUrl = `https://api.github.com/repos/${OWNER}/${REPO}/contents/${encodeURIComponent(filepath)}`;
+            await fetch(delUrl, {
+              method: 'DELETE',
+              headers: {
+                Authorization: `token ${TOKEN}`,
+                Accept: 'application/vnd.github+json',
+                'Content-Type': 'application/json'
+              },
+              body: JSON.stringify({
+                message: `Eliminar archivo antiguo ${filepath} tras renombrar`,
+                sha: sha,
+                branch: BRANCH
+              })
+            });
+          }
+
+          out.textContent = '✅ Archivo ' + finalPath + ' actualizado en GitHub.\n\nCommit:\n' 
+            + JSON.stringify(
+                putJson.commit && putJson.commit.sha 
+                  ? {sha: putJson.commit.sha, message: putJson.commit.message} 
+                  : putJson, 
+                null, 2
+              );
+          updateVisibleFields(datos);
+        } else {
+          out.textContent = '❌ Error al subir archivo:\n' + JSON.stringify(putJson, null, 2);
+        }
+      } catch (err) {
+        out.textContent = '❌ Error de red al subir archivo: ' + err.message;
+      }
+    });
+  </script>
+
+</body>
+</html>
