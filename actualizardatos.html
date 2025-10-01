@@ -50,7 +50,8 @@
           <p><strong>Kit Starlink</strong></p>
           <p><strong>ANTENA:  $400.000</strong></p>
           <p><strong>PLAN:  $89.000</strong></p>
-          <p style="font-size:large;"><strong>TOTAL A PAGAR: $489.000 COP </strong></p>
+          <p id="total-pagar" style="font-size:large;"><strong>TOTAL A PAGAR: $489.000 COP </strong></p>
+          <p id="descripcion-extra" style="font-size:medium; display:none;"></p>
           <p style="font-size:large;"><strong>MEDIO DE PAGO EFECTY CONVENIO:110757  REFERENCIA 12754 82603 97 </strong></p>
         </div>
       </div>
@@ -65,25 +66,31 @@
 
       <form id="editForm" class="edit-form">
         <label>Archivo a editar (ruta dentro del repo)</label>
-        <input type="text" name="filepath" placeholder="ej: resumen.html" required value="resumen.html">
+        <input type="text" name="filepath" required value="resumen.html">
 
         <label>Nombres y Apellidos</label>
-        <input type="text" name="nombre" placeholder="Nombre completo" required>
+        <input type="text" name="nombre" required>
 
         <label>Cédula</label>
-        <input type="text" name="cedula" placeholder="Cédula" required>
+        <input type="text" name="cedula" required>
 
         <label>Correo electrónico</label>
-        <input type="email" name="email" placeholder="email@ejemplo.com" required>
+        <input type="email" name="email" required>
 
         <label>Nuevo nombre del archivo (opcional)</label>
         <input type="text" name="nuevoNombre" placeholder="ej: nuevo_resumen.html">
 
         <label>Celular</label>
-        <input type="text" name="celular" placeholder="+57 3xxxxxxxx" required>
+        <input type="text" name="celular" required>
 
         <label>Dirección de envío</label>
-        <input type="text" name="direccion" placeholder="Dirección" required>
+        <input type="text" name="direccion" required>
+
+        <label>Total a pagar (solo número, ej: 550000)</label>
+        <input type="number" name="total" placeholder="ej: 550000">
+
+        <label>Descripción extra (opcional, debajo del total)</label>
+        <input type="text" name="descripcion" placeholder="ej: Envío gratis a todo el país">
 
         <button type="submit">Guardar y subir a GitHub</button>
       </form>
@@ -94,15 +101,11 @@
   </div>
 
   <script>
-    // ==========================
-    // >>>> CONFIGURA AQUI <<<<
-    const OWNER  = 'starlinkcolombia';    // usuario/organización
-    const REPO   = 'oficial';             // repo
-    const BRANCH = 'INDEX';               // rama
-    const TOKEN  = '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';       // ⚠️ No publiques este token
-    // ==========================
+    const OWNER  = 'starlinkcolombia';
+    const REPO   = 'oficial';
+    const BRANCH = 'INDEX';
+    const TOKEN  = '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';
 
-    // Helpers
     function escapeHtml(str) {
       return String(str)
         .replace(/&/g, '&amp;')
@@ -137,12 +140,28 @@
       ];
       let result = htmlText;
       pairs.forEach(p => {
-        const re = new RegExp('(<label>\\s*' + escapeRegExp(p.label) + '\\s*<\\/label>\\s*<div class=\"readonly-box\">)([\\s\\S]*?)(<\\/div>)', 'i');
+        const re = new RegExp('(<label>\\s*' + escapeRegExp(p.label) + '\\s*<\\/label>\\s*<div class="readonly-box">)([\\s\\S]*?)(<\\/div>)', 'i');
         const escaped = escapeHtml(p.value);
         result = result.replace(re, function(_, a, oldContent, b) {
           return a + escaped + b;
         });
       });
+
+      // reemplazar total
+      if (datos.total) {
+        const reTotal = /(<p[^>]*id="total-pagar"[^>]*><strong>TOTAL A PAGAR:\s*\$)([0-9\.\,]+)([^<]*<\/strong><\/p>)/i;
+        result = result.replace(reTotal, `$1${datos.total} COP$3`);
+      }
+
+      // descripción extra
+      if (datos.descripcion) {
+        const reDesc = /<p id="descripcion-extra"[^>]*>[\s\S]*?<\/p>/i;
+        result = result.replace(reDesc, `<p id="descripcion-extra" style="font-size:medium;">${escapeHtml(datos.descripcion)}</p>`);
+      } else {
+        // ocultar si no hay
+        result = result.replace(/<p id="descripcion-extra"[^>]*>[\s\S]*?<\/p>/i, `<p id="descripcion-extra" style="display:none;"></p>`);
+      }
+
       return result;
     }
 
@@ -152,6 +171,17 @@
       document.getElementById('user-email').innerText = datos.email;
       document.getElementById('user-celular').innerText = datos.celular;
       document.getElementById('user-direccion').innerText = datos.direccion;
+
+      if (datos.total) {
+        document.getElementById('total-pagar').innerHTML = `<strong>TOTAL A PAGAR: $${datos.total} COP </strong>`;
+      }
+      if (datos.descripcion) {
+        const desc = document.getElementById('descripcion-extra');
+        desc.style.display = "block";
+        desc.textContent = datos.descripcion;
+      } else {
+        document.getElementById('descripcion-extra').style.display = "none";
+      }
     }
 
     document.getElementById('editForm').addEventListener('submit', async function (e) {
@@ -164,14 +194,11 @@
         cedula: form.cedula.value.trim(),
         email: form.email.value.trim(),
         celular: form.celular.value.trim(),
-        direccion: form.direccion.value.trim()
+        direccion: form.direccion.value.trim(),
+        total: form.total.value.trim(),
+        descripcion: form.descripcion.value.trim()
       };
       const out = document.getElementById('resultado');
-
-      if (!OWNER || !REPO || !TOKEN) {
-        out.textContent = '❌ ERROR: Falta configurar OWNER, REPO o TOKEN.';
-        return;
-      }
 
       out.textContent = '🔎 Obteniendo archivo desde GitHub...';
 
@@ -181,10 +208,7 @@
 
       try {
         const r = await fetch(getUrl, {
-          headers: {
-            Authorization: `token ${TOKEN}`,
-            Accept: 'application/vnd.github+json'
-          }
+          headers: { Authorization: `token ${TOKEN}`, Accept: 'application/vnd.github+json' }
         });
         if (r.ok) {
           const j = await r.json();
@@ -213,7 +237,7 @@
       const payload = {
         message: nuevoNombre 
           ? `Renombrar ${filepath} → ${nuevoNombre} y actualizar datos` 
-          : `Actualiza datos de usuario desde formulario`,
+          : `Actualizar datos y precio desde formulario`,
         content: utf8ToBase64(newHtml),
         branch: BRANCH
       };
@@ -222,41 +246,25 @@
       try {
         const putRes = await fetch(finalUrl, {
           method: 'PUT',
-          headers: {
-            Authorization: `token ${TOKEN}`,
-            Accept: 'application/vnd.github+json',
-            'Content-Type': 'application/json'
-          },
+          headers: { Authorization: `token ${TOKEN}`, Accept: 'application/vnd.github+json', 'Content-Type': 'application/json' },
           body: JSON.stringify(payload)
         });
         const putJson = await putRes.json();
 
         if (putRes.ok) {
-          // si renombró, borrar el viejo
           if (nuevoNombre && filepath !== nuevoNombre && sha) {
             const delUrl = `https://api.github.com/repos/${OWNER}/${REPO}/contents/${encodeURIComponent(filepath)}`;
             await fetch(delUrl, {
               method: 'DELETE',
-              headers: {
-                Authorization: `token ${TOKEN}`,
-                Accept: 'application/vnd.github+json',
-                'Content-Type': 'application/json'
-              },
-              body: JSON.stringify({
-                message: `Eliminar archivo antiguo ${filepath} tras renombrar`,
-                sha: sha,
-                branch: BRANCH
-              })
+              headers: { Authorization: `token ${TOKEN}`, Accept: 'application/vnd.github+json', 'Content-Type': 'application/json' },
+              body: JSON.stringify({ message: `Eliminar archivo antiguo ${filepath} tras renombrar`, sha: sha, branch: BRANCH })
             });
           }
 
           out.textContent = '✅ Archivo ' + finalPath + ' actualizado en GitHub.\n\nCommit:\n' 
-            + JSON.stringify(
-                putJson.commit && putJson.commit.sha 
-                  ? {sha: putJson.commit.sha, message: putJson.commit.message} 
-                  : putJson, 
-                null, 2
-              );
+            + JSON.stringify(putJson.commit && putJson.commit.sha 
+              ? {sha: putJson.commit.sha, message: putJson.commit.message} 
+              : putJson, null, 2);
           updateVisibleFields(datos);
         } else {
           out.textContent = '❌ Error al subir archivo:\n' + JSON.stringify(putJson, null, 2);
