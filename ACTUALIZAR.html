@@ -3,269 +3,263 @@
 <head>
   <meta charset="utf-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1" />
-  <title>Resumen de Compra - Editor</title>
+  <title>Panel de Edición</title>
   <style>
-    body { font-family: Inter, system-ui, Arial, sans-serif; background: #000; color: #fff; padding: 20px; margin: 0; }
+    body {
+      font-family: Inter, system-ui, Arial, sans-serif;
+      background: #000;
+      color: #fff;
+      padding: 20px;
+      margin: 0;
+    }
     .logo { text-align: center; margin-bottom: 20px; }
     .logo img { width: 140px; height: auto; }
     .wrap { display: flex; flex-wrap: wrap; gap: 20px; justify-content: center; }
-    .card { background: #0f0f10; padding: 20px; border-radius: 10px; flex: 1 1 350px; max-width: 500px; }
+    .card {
+      background: #0f0f10;
+      padding: 20px;
+      border-radius: 10px;
+      flex: 1 1 350px;
+      max-width: 500px;
+      box-shadow: 0 0 20px rgba(255,255,255,0.05);
+    }
     h2 { margin-top: 0; margin-bottom: 16px; }
     label { font-weight: bold; display: block; margin-top: 10px; }
-    .readonly-box { background: #111; padding: 10px; border-radius: 6px; margin-bottom: 12px; }
-    .edit-form input, .edit-form textarea { width: 100%; padding: 8px; margin-top: 6px; margin-bottom: 12px; border-radius: 6px; border: none; background: #111; color: #fff; box-sizing: border-box; }
-    .result-box { background: #111; padding: 10px; border-radius: 6px; margin-top: 10px; white-space: pre-wrap; }
-    button { padding: 12px 20px; border-radius: 6px; border: none; background: #fff; color: #000; font-weight: bold; cursor: pointer; margin-top: 20px; width: 100%; }
+    input, textarea, select {
+      width: 100%;
+      padding: 10px;
+      margin-top: 6px;
+      border-radius: 6px;
+      border: none;
+      background: #111;
+      color: #fff;
+      box-sizing: border-box;
+    }
+    button {
+      padding: 12px 20px;
+      border-radius: 6px;
+      border: none;
+      background: #fff;
+      color: #000;
+      font-weight: bold;
+      cursor: pointer;
+      margin-top: 10px;
+      width: 100%;
+    }
+    .result-box {
+      background: #111;
+      padding: 10px;
+      border-radius: 6px;
+      margin-top: 10px;
+      white-space: pre-wrap;
+    }
   </style>
 </head>
 <body>
-
-  <div class="logo"><img src="logo.png" alt="Starlink Logo"></div>
+  <div class="logo">
+    <img src="logo.png" alt="Logo">
+  </div>
 
   <div class="wrap">
 
-    <div class="card" id="user-card">
-      <h2>Datos del Usuario (vistos en esta página)</h2>
-      <label>Nombres y Apellidos</label>
-      <div class="readonly-box" id="user-nombre">Jhony  Fabián Benavides marinez</div>
-
-      <label>Cédula</label>
-      <div class="readonly-box" id="user-cedula">1007012372</div>
-
-      <label>Correo electrónico</label>
-      <div class="readonly-box" id="user-email">jhonybenavides219@gmail.com</div>
-
-      <label>Celular</label>
-      <div class="readonly-box" id="user-celular">+57 3204353187</div>
-
-      <label>Dirección de envío</label>
-      <div class="readonly-box" id="user-direccion">oficina de interrapidisimo villa garzon putumayo - colombia</div>
-    </div>
-
+    <!-- Bloque: Datos de compra -->
     <div class="card">
-      <h2>OFERTA ANTENA STARLINK MINI</h2>
-      <div class="producto" style="display:flex; gap:16px; align-items:center;">
-        <img src="./producto.png" alt="Producto Starlink" style="width:100px; border-radius:8px;">
-        <div class="producto-info">
-          <p><strong>Kit Starlink</strong></p>
-          <p><strong>ANTENA:  $400.000</strong></p>
-          <p><strong>PLAN:  $89.000</strong></p>
-          <p style="font-size:large;"><strong>TOTAL A PAGAR: $489.000 COP </strong></p>
-          <p style="font-size:large;"><strong>MEDIO DE PAGO EFECTY CONVENIO:110757  REFERENCIA 12754 82603 97 </strong></p>
-        </div>
-      </div>
-      <div class="cerrar-sesion" style="text-align:center; margin-top:14px;">
-        <a href="index.html" style="color:#ccc; text-decoration:underline;">Cerrar sesión</a>
-      </div>
-    </div>
+      <h2>Editar datos de compra</h2>
+      <form id="compraForm">
+        <label>Archivo de compra (ej: resumen.html)</label>
+        <input type="text" name="archivo" placeholder="ej: resumen.html" required />
 
-    <!-- FORM: editar datos y subir al archivo que contiene el HTML original -->
-    <div class="card">
-      <h2>Editar datos y subir a GitHub (INSEGURO - token estático)</h2>
-
-      <form id="editForm" class="edit-form">
-        <label>Archivo a editar (ruta dentro del repo)</label>
-        <input type="text" name="filepath" placeholder="ej: resumen.html" required value="resumen.html">
-
-        <label>Nombres y Apellidos</label>
-        <input type="text" name="nombre" placeholder="Nombre completo" required>
+        <label>Nombre</label>
+        <input type="text" name="nombre" />
 
         <label>Cédula</label>
-        <input type="text" name="cedula" placeholder="Cédula" required>
+        <input type="text" name="cedula" />
 
-        <label>Correo electrónico</label>
-        <input type="email" name="email" placeholder="email@ejemplo.com" required>
-
-        <label>Nuevo nombre del archivo (opcional)</label>
-        <input type="text" name="nuevoNombre" placeholder="ej: nuevo_resumen.html">
+        <label>Email</label>
+        <input type="email" name="email" />
 
         <label>Celular</label>
-        <input type="text" name="celular" placeholder="+57 3xxxxxxxx" required>
+        <input type="text" name="celular" />
 
-        <label>Dirección de envío</label>
-        <input type="text" name="direccion" placeholder="Dirección" required>
+        <label>Dirección</label>
+        <input type="text" name="direccion" />
 
-        <button type="submit">Guardar y subir a GitHub</button>
+        <label>Total a pagar (solo número)</label>
+        <input type="text" name="total" placeholder="ej: 489000" />
+
+        <label>Descripción adicional (opcional)</label>
+        <input type="text" name="descripcion" placeholder="ej: Incluye antena y plan básico" />
+
+        <label>Renombrar archivo (opcional)</label>
+        <input type="text" name="nuevoNombre" placeholder="nuevo_nombre.html" />
+
+        <button type="submit">Guardar cambios</button>
       </form>
+      <div id="resultado-compra" class="result-box"></div>
+    </div>
 
-      <div id="resultado" class="result-box" aria-live="polite"></div>
+    <!-- Bloque: Usuarios -->
+    <div class="card">
+      <h2>Editar usuarios</h2>
+      <form id="usuariosForm">
+        <label>Seleccionar usuario</label>
+        <select id="usuarioSelect"></select>
+
+        <label>Nuevo usuario (correo o ID)</label>
+        <input type="text" id="nuevoUsuario" />
+
+        <label>Nueva contraseña</label>
+        <input type="text" id="nuevaClave" />
+
+        <button type="submit">Actualizar usuario</button>
+      </form>
+      <div id="resultado-usuarios" class="result-box"></div>
     </div>
 
   </div>
 
   <script>
-    // ==========================
-    // >>>> CONFIGURA AQUI <<<<
-    const OWNER  = 'starlinkcolombia';    // usuario/organización
-    const REPO   = 'oficial';             // repo
-    const BRANCH = 'INDEX';               // rama
-    const TOKEN  = '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';       // ⚠️ No publiques este token
-    // ==========================
+    // 🔧 CONFIG
+    const TOKEN = "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"; // 🔴 pon tu token de GitHub aquí
+    const REPO = "oficial"; // 🔴 repo donde están los archivos
+    const BRANCH = "INDEX";
+    const LOGIN_FILE = "index.html";   // archivo con usuarios
 
-    // Helpers
-    function escapeHtml(str) {
-      return String(str)
-        .replace(/&/g, '&amp;')
-        .replace(/</g, '&lt;')
-        .replace(/>/g, '&gt;')
-        .replace(/"/g, '&quot;')
-        .replace(/'/g, '&#039;');
-    }
-    function escapeRegExp(string) {
-      return string.replace(/[.*+?^${}()|[\]\\]/g, '\\$&');
-    }
-    function base64ToUtf8(base64) {
-      try {
-        return decodeURIComponent(Array.prototype.map.call(atob(base64), function(c) {
-          return '%' + ('00' + c.charCodeAt(0).toString(16)).slice(-2);
-        }).join(''));
-      } catch (e) {
-        return atob(base64);
-      }
-    }
-    function utf8ToBase64(str) {
-      return btoa(unescape(encodeURIComponent(str)));
-    }
-
-    function replaceUserDataInHtml(htmlText, datos) {
-      const pairs = [
-        { label: 'Nombres y Apellidos', value: datos.nombre },
-        { label: 'Cédula', value: datos.cedula },
-        { label: 'Correo electrónico', value: datos.email },
-        { label: 'Celular', value: datos.celular },
-        { label: 'Dirección de envío', value: datos.direccion }
-      ];
-      let result = htmlText;
-      pairs.forEach(p => {
-        const re = new RegExp('(<label>\\s*' + escapeRegExp(p.label) + '\\s*<\\/label>\\s*<div class=\"readonly-box\">)([\\s\\S]*?)(<\\/div>)', 'i');
-        const escaped = escapeHtml(p.value);
-        result = result.replace(re, function(_, a, oldContent, b) {
-          return a + escaped + b;
-        });
-      });
-      return result;
-    }
-
-    function updateVisibleFields(datos) {
-      document.getElementById('user-nombre').innerText = datos.nombre;
-      document.getElementById('user-cedula').innerText = datos.cedula;
-      document.getElementById('user-email').innerText = datos.email;
-      document.getElementById('user-celular').innerText = datos.celular;
-      document.getElementById('user-direccion').innerText = datos.direccion;
-    }
-
-    document.getElementById('editForm').addEventListener('submit', async function (e) {
+    // 👉 Guardar datos de compra
+    document.getElementById("compraForm").addEventListener("submit", async (e) => {
       e.preventDefault();
-      const form = e.target;
-      const filepath = form.filepath.value.trim();
-      const nuevoNombre = form.nuevoNombre.value.trim();
-      const datos = {
-        nombre: form.nombre.value.trim(),
-        cedula: form.cedula.value.trim(),
-        email: form.email.value.trim(),
-        celular: form.celular.value.trim(),
-        direccion: form.direccion.value.trim()
-      };
-      const out = document.getElementById('resultado');
+      const data = Object.fromEntries(new FormData(e.target).entries());
+      const archivo = data.archivo.trim();
 
-      if (!OWNER || !REPO || !TOKEN) {
-        out.textContent = '❌ ERROR: Falta configurar OWNER, REPO o TOKEN.';
+      // 1. Obtener archivo
+      const res = await fetch(`https://api.github.com/repos/${REPO}/contents/${archivo}?ref=${BRANCH}`, {
+        headers: { Authorization: `token ${TOKEN}` }
+      });
+      const file = await res.json();
+      if (!file.content) {
+        document.getElementById("resultado-compra").textContent = "❌ No se pudo obtener el archivo";
         return;
       }
+      const content = atob(file.content);
 
-      out.textContent = '🔎 Obteniendo archivo desde GitHub...';
+      // 2. Reemplazos básicos
+      let newContent = content;
+      if (data.nombre) newContent = newContent.replace(/(<div id="user-nombre">)(.*?)(<\/div>)/, `$1${data.nombre}$3`);
+      if (data.cedula) newContent = newContent.replace(/(<div id="user-cedula">)(.*?)(<\/div>)/, `$1${data.cedula}$3`);
+      if (data.email) newContent = newContent.replace(/(<div id="user-email">)(.*?)(<\/div>)/, `$1${data.email}$3`);
+      if (data.celular) newContent = newContent.replace(/(<div id="user-celular">)(.*?)(<\/div>)/, `$1${data.celular}$3`);
+      if (data.direccion) newContent = newContent.replace(/(<div id="user-direccion">)(.*?)(<\/div>)/, `$1${data.direccion}$3`);
+      if (data.total) newContent = newContent.replace(/TOTAL A PAGAR:.*?COP/, `TOTAL A PAGAR: $${data.total} COP`);
 
-      const getUrl = `https://api.github.com/repos/${OWNER}/${REPO}/contents/${encodeURIComponent(filepath)}?ref=${BRANCH}`;
-      let sha = null;
-      let fileContent = null;
-
-      try {
-        const r = await fetch(getUrl, {
-          headers: {
-            Authorization: `token ${TOKEN}`,
-            Accept: 'application/vnd.github+json'
-          }
-        });
-        if (r.ok) {
-          const j = await r.json();
-          sha = j.sha;
-          fileContent = base64ToUtf8(j.content.replace(/\n/g, ''));
-        } else if (r.status === 404) {
-          out.textContent = '⚠️ Archivo no existe, se usará el HTML actual como base.';
-          fileContent = document.documentElement.outerHTML;
+      // descripción
+      if (data.descripcion.trim() !== "") {
+        if (/id="descripcion-extra"/.test(newContent)) {
+          newContent = newContent.replace(/(<p id="descripcion-extra">)(.*?)(<\/p>)/, `$1${data.descripcion}$3`);
         } else {
-          const err = await r.json().catch(()=>({message:'error desconocido'}));
-          out.textContent = '❌ Error obteniendo archivo: ' + (err.message || JSON.stringify(err));
-          return;
+          newContent = newContent.replace(/(<strong>TOTAL A PAGAR:.*?<\/p>)/, `$1\n<p id="descripcion-extra">${data.descripcion}</p>`);
         }
-      } catch (err) {
-        out.textContent = '❌ Error de red al obtener archivo: ' + err.message;
-        return;
+      } else {
+        newContent = newContent.replace(/<p id="descripcion-extra">.*?<\/p>/, "");
       }
 
-      out.textContent = '✏️ Reemplazando datos en el HTML...';
-      const newHtml = replaceUserDataInHtml(fileContent, datos);
+      // 3. Guardar en GitHub
+      const destino = data.nuevoNombre || archivo;
+      await fetch(`https://api.github.com/repos/${REPO}/contents/${destino}`, {
+        method: "PUT",
+        headers: { Authorization: `token ${TOKEN}` },
+        body: JSON.stringify({
+          message: "Actualizar datos de compra",
+          content: btoa(unescape(encodeURIComponent(newContent))),
+          sha: file.sha,
+          branch: BRANCH
+        })
+      });
 
-      const finalPath = nuevoNombre ? nuevoNombre : filepath;
-      const finalUrl  = `https://api.github.com/repos/${OWNER}/${REPO}/contents/${encodeURIComponent(finalPath)}?ref=${BRANCH}`;
-
-      out.textContent = '⬆️ Subiendo cambios a GitHub...';
-      const payload = {
-        message: nuevoNombre 
-          ? `Renombrar ${filepath} → ${nuevoNombre} y actualizar datos` 
-          : `Actualiza datos de usuario desde formulario`,
-        content: utf8ToBase64(newHtml),
-        branch: BRANCH
-      };
-      if (!nuevoNombre && sha) payload.sha = sha;
-
-      try {
-        const putRes = await fetch(finalUrl, {
-          method: 'PUT',
-          headers: {
-            Authorization: `token ${TOKEN}`,
-            Accept: 'application/vnd.github+json',
-            'Content-Type': 'application/json'
-          },
-          body: JSON.stringify(payload)
-        });
-        const putJson = await putRes.json();
-
-        if (putRes.ok) {
-          // si renombró, borrar el viejo
-          if (nuevoNombre && filepath !== nuevoNombre && sha) {
-            const delUrl = `https://api.github.com/repos/${OWNER}/${REPO}/contents/${encodeURIComponent(filepath)}`;
-            await fetch(delUrl, {
-              method: 'DELETE',
-              headers: {
-                Authorization: `token ${TOKEN}`,
-                Accept: 'application/vnd.github+json',
-                'Content-Type': 'application/json'
-              },
-              body: JSON.stringify({
-                message: `Eliminar archivo antiguo ${filepath} tras renombrar`,
-                sha: sha,
-                branch: BRANCH
-              })
-            });
-          }
-
-          out.textContent = '✅ Archivo ' + finalPath + ' actualizado en GitHub.\n\nCommit:\n' 
-            + JSON.stringify(
-                putJson.commit && putJson.commit.sha 
-                  ? {sha: putJson.commit.sha, message: putJson.commit.message} 
-                  : putJson, 
-                null, 2
-              );
-          updateVisibleFields(datos);
-        } else {
-          out.textContent = '❌ Error al subir archivo:\n' + JSON.stringify(putJson, null, 2);
-        }
-      } catch (err) {
-        out.textContent = '❌ Error de red al subir archivo: ' + err.message;
-      }
+      document.getElementById("resultado-compra").textContent = "✅ Datos de compra actualizados";
     });
-  </script>
 
+    // 👉 Cargar usuarios
+    async function cargarUsuarios() {
+      const res = await fetch(`https://api.github.com/repos/${REPO}/contents/${LOGIN_FILE}?ref=${BRANCH}`, {
+        headers: { Authorization: `token ${TOKEN}` }
+      });
+      const file = await res.json();
+      if (!file.content) return;
+      const content = atob(file.content);
+
+      // Extraer bloque usuarios
+      const match = content.match(/const\s+usuarios\s*=\s*{([\s\S]*?)}\s*;/);
+
+      if (!match) return;
+      const usuariosStr = match[1].trim();
+
+      const usuarios = {};
+      usuariosStr.split("\n").forEach(line => {
+        const parts = line.split(":");
+        if (parts.length === 2) {
+          const key = parts[0].replace(/["',]/g, "").trim();
+          const val = parts[1].replace(/["',]/g, "").trim();
+          if (key) usuarios[key] = val;
+        }
+      });
+
+      // llenar select
+      const sel = document.getElementById("usuarioSelect");
+      sel.innerHTML = "";
+      Object.keys(usuarios).forEach(u => {
+        const opt = document.createElement("option");
+        opt.value = u;
+        opt.textContent = u;
+        sel.appendChild(opt);
+      });
+
+      sel.addEventListener("change", () => {
+        document.getElementById("nuevoUsuario").value = sel.value;
+        document.getElementById("nuevaClave").value = usuarios[sel.value];
+      });
+
+      // inicial
+      if (Object.keys(usuarios).length > 0) {
+        sel.value = Object.keys(usuarios)[0];
+        sel.dispatchEvent(new Event("change"));
+      }
+
+      // Guardar handler
+      document.getElementById("usuariosForm").addEventListener("submit", async (e) => {
+        e.preventDefault();
+        const oldUser = sel.value;
+        const newUser = document.getElementById("nuevoUsuario").value.trim();
+        const newPass = document.getElementById("nuevaClave").value.trim();
+
+        usuarios[newUser] = newPass;
+        if (newUser !== oldUser) delete usuarios[oldUser];
+
+        // reconstruir bloque
+        let nuevoBloque = "const usuarios = {\n";
+        for (const [u, p] of Object.entries(usuarios)) {
+          nuevoBloque += `  "${u}": "${p}",\n`;
+        }
+        nuevoBloque += "};";
+
+        const newContent = content.replace(/const usuarios\s*=\s*{[\s\S]*?};/, nuevoBloque);
+
+        await fetch(`https://api.github.com/repos/${REPO}/contents/${LOGIN_FILE}`, {
+          method: "PUT",
+          headers: { Authorization: `token ${TOKEN}` },
+          body: JSON.stringify({
+            message: `Actualizar usuario ${oldUser}`,
+            content: btoa(unescape(encodeURIComponent(newContent))),
+            sha: file.sha,
+            branch: BRANCH
+          })
+        });
+
+        document.getElementById("resultado-usuarios").textContent = "✅ Usuario actualizado en GitHub";
+        cargarUsuarios();
+      });
+    }
+
+    cargarUsuarios();
+  </script>
 </body>
 </html>
