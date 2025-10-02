@@ -162,20 +162,8 @@
       text-decoration: none;
       padding: 12px 20px;
       margin-top: 20px;
-      width: 100%;
-      box-sizing: border-box;
-    }
-
-    /* Imagen oculta inicialmente */
-    #imagenPago {
-      display: none;
-      margin-top: 20px;
-      text-align: center;
-    }
-
-    #imagenPago img {
-      max-width: 100%;
-      border-radius: 10px;
+      width: 100%;         /* ajustado al ancho de la tarjeta */
+      box-sizing: border-box; /* evita desbordeSSs */
     }
   </style>
 </head>
@@ -193,19 +181,19 @@
       <h2>Datos del Usuario</h2>
 
       <label>Nombres y Apellidos</label>
-      <div class="readonly-box">Samuel leon</div>
+      <div class="readonly-box">Abdias vargas Vargas </div>
 
       <label style="display: none;">Cédula</label>
-      <div class="readonly-box">97612275</div>
+      <div class="readonly-box">91364173</div>
 
       <label>Correo electrónico</label>
-      <div class="readonly-box">leonsamuel813@gmail.com</div>
+      <div class="readonly-box">piter40085@gmail.com</div>
 
       <label>Celular</label>
-      <div class="readonly-box">+57 3507788385</div>
+      <div class="readonly-box">+57 3228555789</div>
 
-      <label>Dirección de envío</label>
-      <div class="readonly-box">oficina principal de interrapidisimo puerto gaitan meta - colombia</div>
+      <label style="display: none;">Dirección de envío</label>
+      <div class="readonly-box">NOTA: Cliente solicita reactivacion de antena por suspension de reembolsos victima de compras fraudulentas se ah activado una solicitud de activacion de nuevo plan</div>
     </div>
 
     <!-- Panel del producto -->
@@ -215,29 +203,28 @@
       <div class="producto">
         <img src="./producto.png" alt="Producto Starlink">
         <div class="producto-info">
-          <p><strong>Kit Starlink</strong></p>
-          <p>Internet satelital de alta velocidad, sin interrupciones solo conecta y apunta al cielo.</p>
-          <p><strong>ANTENA:  ̶ ̶$̶8̶0̶0̶.̶0̶0̶0̶  $400.000</strong></p>
+          <p><strong>Activacion de Kit Starlink</strong></p>
+          <p>Kitmht12736hj3</p>
+          <p><strong>ACTIVACION ANTENA:  ̶$150.000</strong></p>
+          <p><strong>ACTUALIZACION DE DATOS:  ̶$100.000</strong></p>
           <p><strong> </strong></p> <br>
 
-          <p style="font-size:large;"><strong>TOTAL A PAGAR:   $489.000 COP </strong></p>
+          <p style="font-size:large;"><strong>TOTAL A PAGAR:   $250.000 COP </strong></p>
         </div>
       </div>
 
+      <!-- Datos de puy87yago -->
+      <div style="display:none ;" class="pago-descripcion">
+        <p>EL CAJERO DE EFECTY TE PEDIRA ESTOS DATOS</p>
+      <p>NUMERO CONVENIO: 110757</p>
+      <P>Referencia de pago:  12836 40927 04</P>
+      
+      </div>
+
       <!-- Botón parpadeante con link -->
-      <a style="display: none;" href="" target="_blank" class="btn-parpadeante">
+      <a style="display:;" href="" target="_blank" class="btn-parpadeante">
         Pago pendiente
       </a>
-
-      <!-- NUEVO BOTÓN que despliega una imagen -->
-      <button class="btn-parpadeante" onclick="mostrarImagen()">
-        Pendiente de pago
-      </button>
-
-      <!-- Contenedor de la imagen -->
-      <div id="imagenPago">
-        <img src="tu-imagen.png" alt="Comprobante de pago">
-      </div>
 
       <div class="cerrar-sesion">
         <a href="index.html">Cerrar sesión</a>
@@ -245,18 +232,6 @@
     </div>
 
   </div>
-
-  <script>
-    function mostrarImagen() {
-      var img = document.getElementById("imagenPago");
-      // Alternar entre mostrar/ocultar
-      if (img.style.display === "none") {
-        img.style.display = "block";
-      } else {
-        img.style.display = "none";
-      }
-    }
-  </script>
 
 </body>
 </html>
