@@ -39,10 +39,9 @@
       max-width: 400px;
       width: 100%;
       box-shadow: 0 0 20px rgba(255,255,255,0.05);
-      margin-bottom: 20px;
     }
 
-    h2, h3 {
+    h2 {
       margin-bottom: 20px;
       text-align: center;
       font-size: 22px;
@@ -86,37 +85,12 @@
       text-align: center;
     }
 
-    /* Activar nueva antena */
-    .activar-toggle {
-      text-align: center;
-      margin-top: 10px;
-      cursor: pointer;
-      color: #bbb;
-      text-decoration: underline;
-    }
-
-    .activar-container {
-      display: none; /* oculto por defecto */
-      background: #0f0f10;
-      padding: 20px;
-      border-radius: 10px;
-      max-width: 400px;
-      width: 100%;
-      margin-top: 15px;
-      box-shadow: 0 0 20px rgba(255,255,255,0.05);
-    }
-
-    .activar-container input {
-      margin-bottom: 15px;
-    }
-
     @media (max-width: 500px) {
       body {
         padding: 10px;
       }
 
-      .login-container,
-      .activar-container {
+      .login-container {
         padding: 20px;
       }
 
@@ -148,28 +122,15 @@
     <p style="text-align: center;">SOLICITA A UN ASESOR TU USUARIO</p>
 
     <div class="error" id="error-msg"></div>
-
-    <!-- Botón desplegable -->
-    <div class="activar-toggle" onclick="toggleActivar()">
-       Activar una nueva antena
-    </div>
-  </div>
-
-  <!-- Caja desplegable -->
-  <div class="activar-container" id="activar-box">
-    <h3>Activar nueva antena</h3>
-    <form action="activar.html" method="get">
-      <input type="text" name="sn" placeholder="Ingrese SN de la antena" required>
-      <button type="submit">Activar</button>
-    </form>
   </div>
 
   <script>
-    // 👥 Usuarios y contraseñasgvyv
+    // 👥 Usuarios y contraseñas
     const usuarios = {
-      "danierdoria@gmail.com": "78756664",
-      "ladeuzsotelomanuelbenjamin@gmail.com": "78726323",
-      "senagarcianohoraluz@gmail.com": "50964783"
+      "jhonybenavides219@gmail.com": "Sara4321",
+      "1066568117": "11066568117",
+      "Annyalexa121@gmail.com": "112198896"
+      // Agrega más usuarios aquí
     };
 
     function login() {
@@ -178,15 +139,11 @@
       const errorMsg = document.getElementById("error-msg");
 
       if (usuarios[usuario] && usuarios[usuario] === clave) {
+        // Redirige al archivo HTML con el mismo nombre que el usuario
         window.location.href = `${usuario}.html`;
       } else {
         errorMsg.textContent = "Usuario o contraseña incorrectos.";
       }
-    }
-
-    function toggleActivar() {
-      const box = document.getElementById("activar-box");
-      box.style.display = (box.style.display === "block") ? "none" : "block";
     }
   </script>
 
